@@ -1,0 +1,21 @@
+.sass-cache
+.smbdelete*
+.afpDeleted*
+*.tmp
+*.log
+package-lock.json
+node_modules
+release
+languages/*~
+.DS_Store
+.idea
+
+# Generated assets
+assets/js
+assets/css
+!assets/js/vendor
+!assets/js/src
+!assets/css/vendor
+
+# Do not exclude readme
+!README.md
