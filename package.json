@@ -2,7 +2,7 @@
     "name": "mutatio",
     "title": "Mutatio — change your site look",
     "tagline": "The white-label and branding solution for your site.",
-    "description": "The white-label and branding solution for multisite. Login images, favicons, remove WordPress links and branding, and much more.",
+    "description": "The white-label and branding solution for single or multisite. Login images, favicons, remove WordPress links and branding, and much more.",
     "version": "1.0.0",
     "homepage": "http://mutatio.iworks.pl/",
     "author": [
@@ -53,7 +53,7 @@
     "keywords": [],
     "repository": {
         "type": "git",
-        "url": "git@bitbucket.org:iworks-pl/og.git"
+        "url": "git@bitbucket.org:iworks-pl/mutatio.git"
     },
     "license": "GPL-3.0"
 }
