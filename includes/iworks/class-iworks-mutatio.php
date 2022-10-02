@@ -17,6 +17,14 @@ abstract class iWorks_Mutatio {
 
 	protected $root = '';
 
+	/**
+	 * iWorks Options object
+	 *
+	 * @since 1.0.0
+	 */
+	protected $options;
+
+
 	public function __construct() {
 		$file        = dirname( dirname( __FILE__ ) );
 		$this->url   = rtrim( plugin_dir_url( $file ), '/' );
@@ -26,6 +34,10 @@ abstract class iWorks_Mutatio {
 		 * End of line
 		 */
 		$this->eol = $this->debug ? PHP_EOL : '';
+		/**
+		 * set options
+		 */
+		$this->options = get_iworks_mutatio_options();
 	}
 
 
@@ -52,5 +64,6 @@ abstract class iWorks_Mutatio {
 			)
 		);
 	}
+
 }
 

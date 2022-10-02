@@ -49,13 +49,13 @@ $includes = $base . '/includes';
  *
  * @since 1.0.0
  */
-// include_once $base . '/etc/options.php';
+include_once $base . '/etc/options.php';
 
 /**
  * @since 1.0.6
  */
 if ( ! class_exists( 'iworks_options' ) ) {
-	// include_once $includes . '/iworks/options/options.php';
+	include_once $includes . '/iworks/options/options.php';
 }
 
 /**
@@ -66,7 +66,7 @@ load_plugin_textdomain( 'mutatio', false, plugin_basename( dirname( __FILE__ ) )
 /**
  * load
  */
-// require_once $includes . '/iworks/mutatio/class-iworks-mutatio-manifest.php';
+require_once $includes . '/iworks/mutatio/class-iworks-mutatio-loader.php';
 // require_once $includes . '/iworks/mutatio/class-iworks-mutatio-frontend.php';
 // require_once $includes . '/iworks/mutatio/class-iworks-mutatio-apple.php';
 // require_once $includes . '/iworks/mutatio/class-iworks-mutatio-microsoft.php';
@@ -74,7 +74,7 @@ load_plugin_textdomain( 'mutatio', false, plugin_basename( dirname( __FILE__ ) )
 /**
  * run
  */
-// new iWorks_PWA_manifest;
+new iWorks_Mutatio_Loader;
 // new iWorks_PWA_Frontend;
 // new iWorks_PWA_Apple;
 // new iWorks_PWA_Microsoft;
@@ -93,22 +93,22 @@ if ( is_admin() ) {
  * since 1.0.0
  *
  */
-// global $iworks_mutatio_options;
-// $iworks_mutatio_options = null;
+global $iworks_mutatio_options;
+$iworks_mutatio_options = null;
 
-// function get_iworks_mutatio_options() {
-	// global $iworks_mutatio_options;
-	// if ( is_object( $iworks_mutatio_options ) ) {
-		// return $iworks_mutatio_options;
-	// }
-	// $iworks_mutatio_options = new iworks_options();
-	// $iworks_mutatio_options->set_option_function_name( 'iworks_mutatio_options' );
-	// $iworks_mutatio_options->set_option_prefix( 'iworks_mutatio_' );
-	// if ( method_exists( $iworks_mutatio_options, 'set_plugin' ) ) {
-		// $iworks_mutatio_options->set_plugin( basename( __FILE__ ) );
-	// }
-	// return $iworks_mutatio_options;
-// }
+function get_iworks_mutatio_options() {
+	global $iworks_mutatio_options;
+	if ( is_object( $iworks_mutatio_options ) ) {
+		return $iworks_mutatio_options;
+	}
+	$iworks_mutatio_options = new iworks_options();
+	$iworks_mutatio_options->set_option_function_name( 'iworks_mutatio_options' );
+	$iworks_mutatio_options->set_option_prefix( 'iworks_mutatio_' );
+	if ( method_exists( $iworks_mutatio_options, 'set_plugin' ) ) {
+		$iworks_mutatio_options->set_plugin( basename( __FILE__ ) );
+	}
+	return $iworks_mutatio_options;
+}
 
 
 /**
