@@ -20,11 +20,42 @@ class iWorks_Mutatio_Module_Cookie extends iWorks_Mutatio_Module {
 	 */
 	protected $module_slug = 'cookie';
 
+	/**
+	 * Module group key name.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
+	protected $module_group_key = 'frontend';
+
 	public function __construct( $options ) {
 		if ( $this->is_rest_request() ) {
 			return;
 		}
 		parent::__construct( $options );
+		$this->module_name = __( 'Cookie', 'mutatio' );
+		/**
+		 * Settings
+		 */
+		$this->configuration = array(
+			array(
+				'name'              => $this->get_field_name( 'text' ),
+				'type'              => 'textarea',
+				'th'                => __( 'Message', 'mutatio' ),
+				'default'           => sprintf(
+					__( 'We use cookies and similar technologies to provide services and to gather information for statistical and other purposes. You can change the way you want the cookies to be stored or accessed on your device in the settings of your browser. If you do not agree, change the settings of your browser. For more information, refer to our %s.', 'mutatio' ),
+					sprintf(
+						'<a href="%s">%s</a>',
+						get_privacy_policy_url(),
+						_x( 'Privacy Policy', 'in cookie message, mayby propoer form', 'mutatio' )
+					)
+				),
+				'sanitize_callback' => 'kses',
+				'since'             => '1.0.0',
+			),
+		);
+
 		if ( is_admin() ) {
 		} else {
 			add_action( 'wp_footer', array( $this, 'add_cookie_notice' ), PHP_INT_MAX );
@@ -235,10 +266,6 @@ class iWorks_Mutatio_Module_Cookie extends iWorks_Mutatio_Module {
 			return true;
 		}
 		return false;
-	}
-
-	public function filter_options_add_module_configuration( $configuration, $module_slug ) {
-		return $configuration;
 	}
 
 }

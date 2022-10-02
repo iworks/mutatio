@@ -87,6 +87,26 @@ function iworks_mutatio_options() {
 				'label' => __( 'Front-end', 'mutatio' ),
 				'since' => '1.0.0',
 			),
+			array(
+				'name'              => 'authorbox',
+				'type'              => 'checkbox',
+				'th'                => __( 'Author Box', 'mutatio' ),
+				'default'           => 0,
+				'sanitize_callback' => 'absint',
+				'classes'           => array( 'switch-button' ),
+				'since'             => '1.0.0',
+				'group'             => 'module',
+			),
+			array(
+				'name'              => 'cookie',
+				'type'              => 'checkbox',
+				'th'                => __( 'Cookie Notice', 'mutatio' ),
+				'default'           => 0,
+				'sanitize_callback' => 'absint',
+				'classes'           => array( 'switch-button' ),
+				'since'             => '1.0.0',
+				'group'             => 'module',
+			),
 			/**
 			 * Section "Email"
 			 *
@@ -104,16 +124,6 @@ function iworks_mutatio_options() {
 			array(
 				'type'  => 'heading',
 				'label' => __( 'Utilites', 'mutatio' ),
-			),
-			array(
-				'name'              => 'cookie',
-				'type'              => 'checkbox',
-				'th'                => __( 'Cookie Notice', 'mutatio' ),
-				'default'           => 0,
-				'sanitize_callback' => 'absint',
-				'classes'           => array( 'switch-button' ),
-				'since'             => '1.0.0',
-				'group'             => 'module',
 			),
 			array(
 				'name'              => 'maintenance',

@@ -64,26 +64,43 @@ class iWorks_Mutatio_Administrator extends iWorks_Mutatio {
 		 */
 		$options = apply_filters( 'iworks_mutatio_admin_subpage_configuration', array(), $module_group_key );
 		if ( empty( $options ) ) {
-			$options                = $page_data;
-			$options['use_tabs']    = true;
-				$options['version'] = '0.0';
-				$options['options'] = array(
-					/**
-					 * Section "Admin Area"
-					 *
-					 * @since 1.0.0
-					 */
-					array(
-						'type'        => 'heading',
-						'label'       => __( 'Admin Area', 'mutatio' ),
-						'description' => esc_html__( 'Select the modules which should be active.', 'mutatio' ),
-					),
-				);
+			$options['options'] = array(
+				/**
+				 * Section "Admin Area"
+				 *
+				 * @since 1.0.0
+				 */
+				array(
+					'type'        => 'heading',
+					'description' => esc_html__( 'There is no active modules in this section.', 'mutatio' ),
+				),
+			);
+		} else {
+			$page_data['use_tabs'] = true;
 		}
-
-		d( $options );
+		$options = $page_data + $options;
+		?>
+<div class="wrap iworks_options">
+	<h1><?php echo $options['page_title']; ?></h1>
+	<form method="post" action="<?php echo esc_url( $url ); ?>" id="<?php echo esc_attr( $screen->base ); ?>">
+		<?php wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false ); ?>
+		<?php wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false ); ?>
+		<input type="hidden" name="action" value="save_howto_metaboxes_general" />
+		<div class="metabox-holder<?php echo empty( $screen_layout_columns ) || 2 == $screen_layout_columns ? ' has-right-sidebar' : ''; ?>">
+			<div id="post-body" class="has-sidebar">
+				<div id="post-body-content" class="has-sidebar-content">
+		<?php
+		// $this->settings_fields( $option_name );
 
 		$this->options->build_options( 'index', true, false, $options );
+		?>
+				</div>
+			</div>
+			<br class="clear"/>
+		</div>
+	</form>
+</div>
+		<?php
 	}
 }
 

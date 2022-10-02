@@ -51,6 +51,24 @@ abstract class iWorks_Mutatio_Module {
 	 */
 	protected $module_options = array();
 
+	/**
+	 * Module name name.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
+	protected $module_name = 'Mutatio';
+
+	/**
+	 * Module group_key name.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
+	protected $module_group_key = 'mutatio';
+
 	public function __construct( $options ) {
 		$file        = dirname( dirname( __FILE__ ) );
 		$this->url   = rtrim( plugin_dir_url( $file ), '/' );
@@ -79,9 +97,29 @@ abstract class iWorks_Mutatio_Module {
 		return defined( 'REST_REQUEST' ) && REST_REQUEST;
 	}
 
-	abstract public function filter_options_add_module_configuration( $configuration, $module_slug );
-	// abstract public function action_menu_admin_add_subpage();
-	//
+	public function filter_options_add_module_configuration( $configuration, $module_group_key ) {
+		if ( $this->module_group_key !== $module_group_key ) {
+			return $configuration;
+		}
+		if ( ! isset( $configuration['options'] ) ) {
+			$configuration['options'] = array();
+		}
+		$configuration['options'][] = array(
+			'type'  => 'heading',
+			'label' => $this->module_name,
+		);
+		foreach ( $this->configuration as $one ) {
+			$configuration['options'][] = $one;
+		}
+		return $configuration;
+	}
 
+	protected function get_field_name( $field_name ) {
+		return sprintf(
+			'%s_%s',
+			$this->module_slug,
+			$field_name
+		);
+	}
 }
 
