@@ -5,13 +5,6 @@ include_once 'class-iworks-mutatio-module.php';
 class iWorks_Mutatio_Module_Cookie extends iWorks_Mutatio_Module {
 
 	/**
-	 * Module option name.
-	 *
-	 * @var string
-	 */
-	protected $option_name = 'mutatio_cookie_cfg';
-
-	/**
 	 * Module slug name.
 	 *
 	 * @since 1.0.0
@@ -147,9 +140,9 @@ class iWorks_Mutatio_Module_Cookie extends iWorks_Mutatio_Module {
 		/**
 		 * cookie js data
 		 */
-		echo '<script id="mutatio-cookie-notice-js">';
-		printf( 'window.mutatio_cookie = %s;', wp_json_encode( $this->data ) );
-		echo '</script>';
+		// echo '<script id="mutatio-cookie-notice-js">';
+		// printf( 'window.mutatio_cookie = %s;', wp_json_encode( $this->data ) );
+		// echo '</script>';
 		echo PHP_EOL;
 	}
 
@@ -260,5 +253,13 @@ class iWorks_Mutatio_Module_Cookie extends iWorks_Mutatio_Module {
 		wp_send_json_success();
 	}
 
+	public function wp_register_script() {
+		$this->register_script();
+	}
+
+	public function wp_enqueue_script() {
+		$this->set_data();
+		$this->enqueue_script();
+	}
 
 }

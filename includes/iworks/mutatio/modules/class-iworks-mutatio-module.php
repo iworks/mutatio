@@ -7,15 +7,12 @@ abstract class iWorks_Mutatio_Module {
 	 *
 	 * @since 1.0.0
 	 */
-	protected $version = 'PLUGIN_VERSION';
-
+	protected $version       = 'PLUGIN_VERSION';
 	protected $configuration = array();
-
+	protected $data          = array();
 	protected $url;
-
 	protected $debug = false;
-
-	protected $root = '';
+	protected $root  = '';
 
 	/**
 	 * iWorks Options object
@@ -70,7 +67,7 @@ abstract class iWorks_Mutatio_Module {
 	protected $module_group_key = 'mutatio';
 
 	public function __construct( $options ) {
-		$file        = dirname( dirname( __FILE__ ) );
+		$file        = dirname( dirname( dirname( dirname( __FILE__ ) ) ) );
 		$this->url   = rtrim( plugin_dir_url( $file ), '/' );
 		$this->root  = rtrim( plugin_dir_path( $file ), '/' );
 		$this->debug = defined( 'WP_DEBUG' ) && WP_DEBUG;
@@ -86,7 +83,12 @@ abstract class iWorks_Mutatio_Module {
 		 * hooks
 		 */
 		add_filter( 'iworks_mutatio_admin_subpage_configuration', array( $this, 'filter_options_add_module_configuration' ), 10, 2 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'wp_register_script' ), 544 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_script' ), 887 );
 	}
+
+	abstract public function wp_register_script();
+	abstract public function wp_enqueue_script();
 
 	/**
 	 * Check is REST API request handler
@@ -163,7 +165,31 @@ abstract class iWorks_Mutatio_Module {
 				$args
 			);
 		}
+	}
 
+	protected function register_script( $target = 'frontend' ) {
+		wp_register_script(
+			$this->options->get_option_name( $this->module_slug ),
+			sprintf(
+				'%s/assets/scripts/module/%s-%s%s.js',
+				$this->url,
+				$this->module_slug,
+				$target,
+				$this->debug ? '' : '.min'
+			),
+			array(),
+			$this->version,
+			true
+		);
+	}
+
+	protected function enqueue_script() {
+		$handle = $this->options->get_option_name( $this->module_slug );
+
+		d( $this->data );
+		wp_enqueue_script( $handle );
+		if ( $this->data ) {
+			wp_localize_script( $handle, $handle, $data );
+		}
 	}
 }
-

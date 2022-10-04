@@ -13,4 +13,9 @@ class iWorks_Mutatio_Module_Login extends iWorks_Mutatio_Module {
 		$this->register_setting( $this->configuration, $this->module_group_key );
 	}
 
+	public function wp_register_script() {
+	}
+
+	public function wp_enqueue_script() {
+	}
 }
