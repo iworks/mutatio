@@ -28,6 +28,7 @@ class iWorks_Mutatio_Module_Authorbox extends iWorks_Mutatio_Module {
 				'since'   => '1.0.0',
 			),
 		);
+		$this->register_setting( $this->configuration, $this->module_group_key );
 	}
 
 }

@@ -4,6 +4,8 @@ include_once dirname( dirname( __FILE__ ) ) . '/class-iworks-mutatio.php';
 
 class iWorks_Mutatio_Administrator extends iWorks_Mutatio {
 
+	private $page_prefix = 'mutatio_page_';
+
 	public function __construct() {
 		parent::__construct();
 		add_action( 'admin_head', array( $this, 'action_admin_head_add_favicon' ) );
@@ -53,7 +55,6 @@ class iWorks_Mutatio_Administrator extends iWorks_Mutatio {
 		return $logo;
 	}
 
-
 	public function admin_subpage_callback() {
 		$screen           = get_current_screen();
 		$module_group_key = end( preg_split( '/_/', $screen->base ) );
@@ -64,7 +65,8 @@ class iWorks_Mutatio_Administrator extends iWorks_Mutatio {
 		 */
 		$options = apply_filters( 'iworks_mutatio_admin_subpage_configuration', array(), $module_group_key );
 		if ( empty( $options ) ) {
-			$options['options'] = array(
+			$options['show_submit_button'] = false;
+			$options['options']            = array(
 				/**
 				 * Section "Admin Area"
 				 *
@@ -82,7 +84,7 @@ class iWorks_Mutatio_Administrator extends iWorks_Mutatio {
 		?>
 <div class="wrap iworks_options">
 	<h1><?php echo $options['page_title']; ?></h1>
-	<form method="post" action="<?php echo esc_url( $url ); ?>" id="<?php echo esc_attr( $screen->base ); ?>">
+	<form method="post" action="options.php" id="<?php echo esc_attr( $screen->base ); ?>">
 		<?php wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false ); ?>
 		<?php wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false ); ?>
 		<input type="hidden" name="action" value="save_howto_metaboxes_general" />
@@ -90,9 +92,9 @@ class iWorks_Mutatio_Administrator extends iWorks_Mutatio {
 			<div id="post-body" class="has-sidebar">
 				<div id="post-body-content" class="has-sidebar-content">
 		<?php
-		// $this->settings_fields( $option_name );
+		settings_fields( $screen->base );
 
-		$this->options->build_options( 'index', true, false, $options );
+		$this->options->build_options( $module_group_key, true, false, $options );
 		?>
 				</div>
 			</div>
@@ -102,5 +104,6 @@ class iWorks_Mutatio_Administrator extends iWorks_Mutatio {
 </div>
 		<?php
 	}
+
 }
 

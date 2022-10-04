@@ -40,22 +40,45 @@ class iWorks_Mutatio_Module_Cookie extends iWorks_Mutatio_Module {
 		 */
 		$this->configuration = array(
 			array(
-				'name'              => $this->get_field_name( 'text' ),
-				'type'              => 'textarea',
-				'th'                => __( 'Message', 'mutatio' ),
-				'default'           => sprintf(
-					__( 'We use cookies and similar technologies to provide services and to gather information for statistical and other purposes. You can change the way you want the cookies to be stored or accessed on your device in the settings of your browser. If you do not agree, change the settings of your browser. For more information, refer to our %s.', 'mutatio' ),
+				'name'        => $this->get_field_name( 'text' ),
+				'type'        => 'textarea',
+				'th'          => __( 'Cookie Text', 'mutatio' ),
+				'default'     => esc_html__( 'We use cookies and similar technologies to provide services and to gather information for statistical and other purposes. You can change the way you want the cookies to be stored or accessed on your device in the settings of your browser. If you do not agree, change the settings of your browser.', 'mutatio' ),
+				'since'       => '1.0.0',
+				'classes'     => array( 'large-text' ),
+				'description' => esc_html__( 'Customize the cookie message that you want to show to your visitors.', 'mutatio' ),
+			),
+			array(
+				'th'                => __( 'Show Privacy', 'mutatio' ),
+				'name'              => $this->get_field_name( 'show_privacy_link' ),
+				'description'       => esc_html__( 'Choose whether you want to show a privacy policy link.', 'mutatio' ),
+				'type'              => 'checkbox',
+				'default'           => true,
+				'sanitize_callback' => 'absint',
+				'classes'           => array( 'switch-button' ),
+				'since'             => '1.0.0',
+			),
+			array(
+				'name'        => $this->get_field_name( 'privacy_text' ),
+				'type'        => 'text',
+				'th'          => __( 'Privacy Text', 'mutatio' ),
+				'default'     => sprintf(
+					__( 'For more information, refer to our %s.', 'mutatio' ),
 					sprintf(
 						'<a href="%s">%s</a>',
 						get_privacy_policy_url(),
 						_x( 'Privacy Policy', 'in cookie message, mayby propoer form', 'mutatio' )
 					)
 				),
-				'sanitize_callback' => 'kses',
-				'since'             => '1.0.0',
+				'since'       => '1.0.0',
+				'classes'     => array( 'large-text' ),
+				'description' => esc_html__( 'Customize the Privacy Policy line that you want to show to your visitors. Will be added at the end of the cookie text.', 'mutatio' ),
 			),
 		);
-
+		$this->register_setting( $this->configuration, $this->module_group_key );
+		/**
+		 * load
+		 */
 		if ( is_admin() ) {
 		} else {
 			add_action( 'wp_footer', array( $this, 'add_cookie_notice' ), PHP_INT_MAX );
@@ -65,10 +88,15 @@ class iWorks_Mutatio_Module_Cookie extends iWorks_Mutatio_Module {
 	}
 
 	private function set_data() {
-		if ( ! function_exists( 'get_privacy_policy_url' ) ) {
+		$id   = 'mutatio-cookie-notice';
+		$text = $this->get_option_value( 'text' );
+		if ( $this->get_option_value( 'show_privacy_link' ) ) {
+			$text .= ' ';
+			$text .= $this->get_option_value( 'privacy_text' );
+		}
+		if ( empty( $text ) ) {
 			return;
 		}
-		$id         = 'mutatio-cookie-notice';
 		$this->data = array(
 			'name'    => $id,
 			'cookie'  => array(
@@ -83,14 +111,7 @@ class iWorks_Mutatio_Module_Cookie extends iWorks_Mutatio_Module {
 			'logged'  => is_user_logged_in() ? 'yes' : 'no',
 			'user_id' => get_current_user_id(),
 			'nonce'   => wp_create_nonce( __CLASS__ ),
-			'text'    => sprintf(
-				__( 'We use cookies and similar technologies to provide services and to gather information for statistical and other purposes. You can change the way you want the cookies to be stored or accessed on your device in the settings of your browser. If you do not agree, change the settings of your browser. For more information, refer to our %s.', 'mutatio' ),
-				sprintf(
-					'<a href="%s">%s</a>',
-					get_privacy_policy_url(),
-					_x( 'Privacy Policy', 'in cookie message, mayby propoer form', 'mutatio' )
-				)
-			),
+			'text'    => $text,
 		);
 	}
 
@@ -216,8 +237,6 @@ class iWorks_Mutatio_Module_Cookie extends iWorks_Mutatio_Module {
 			$key          = $this->get_meta_key_name();
 			$time[ $key ] = $value;
 			update_user_meta( $_POST['user_id'], $this->user_meta_name, $time );
-			// Clear caches.
-			$this->clear_cache();
 		}
 		wp_send_json_success();
 	}
@@ -241,31 +260,5 @@ class iWorks_Mutatio_Module_Cookie extends iWorks_Mutatio_Module {
 		wp_send_json_success();
 	}
 
-	/**
-	 * Clear cache to hide cookie notice.
-	 *
-	 * We should clear the page cache when cookie notice is
-	 * dismissed by a visitor. Otherwise it will keep on showing
-	 * the notice even after dismissal.
-	 *
-	 * @since 1.0.0
-	 */
-	private function clear_cache() {
-		// Clear HB cache.
-		do_action( 'wphb_clear_page_cache' );
-	}
-
-	/**
-	 * Check Privacy policy page
-	 *
-	 * @since 1.0.0
-	 */
-	private function check_privacy_policy_page() {
-		$policy_page_id = (int) get_option( 'wp_page_for_privacy_policy' );
-		if ( ! empty( $policy_page_id ) && 'publish' === get_post_status( $policy_page_id ) ) {
-			return true;
-		}
-		return false;
-	}
 
 }

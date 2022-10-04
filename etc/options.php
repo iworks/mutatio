@@ -76,6 +76,7 @@ function iworks_mutatio_options() {
 				'classes'           => array( 'switch-button' ),
 				'since'             => '1.0.0',
 				'group'             => 'module',
+				'description'       => esc_html__( 'The Login Screen module allows you to customize the default login screen.', 'mutatio' ),
 			),
 			/**
 			 * Section "Frontend"
@@ -96,6 +97,7 @@ function iworks_mutatio_options() {
 				'classes'           => array( 'switch-button' ),
 				'since'             => '1.0.0',
 				'group'             => 'module',
+				'description'       => esc_html__( 'The Author Box module adds a author box at end of your content, showing the author’s name, biography, gravatar, post history, and social network profiles.', 'mutatio' ),
 			),
 			array(
 				'name'              => 'cookie',
@@ -106,6 +108,7 @@ function iworks_mutatio_options() {
 				'classes'           => array( 'switch-button' ),
 				'since'             => '1.0.0',
 				'group'             => 'module',
+				'description'       => esc_html__( 'The Cookie Notice module allows you to inform users that your site uses cookies and to comply with cookie and GDPR regulations.', 'mutatio' ),
 			),
 			/**
 			 * Section "Email"
