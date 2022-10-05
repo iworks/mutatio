@@ -31,6 +31,7 @@ class iWorks_Mutatio_Module_Cookie extends iWorks_Mutatio_Module {
 		/**
 		 * Settings
 		 */
+		global $content_width;
 		$this->configuration = array(
 			array(
 				'name'        => $this->get_field_name( 'text' ),
@@ -67,6 +68,30 @@ class iWorks_Mutatio_Module_Cookie extends iWorks_Mutatio_Module {
 				'classes'     => array( 'large-text' ),
 				'description' => esc_html__( 'Customize the Privacy Policy line that you want to show to your visitors. Will be added at the end of the cookie text.', 'mutatio' ),
 			),
+			array(
+				'type'  => 'subheading',
+				'label' => esc_html__( 'Design', 'mutatio' ),
+			),
+			array(
+				'th'                => __( 'Apply Design', 'mutatio' ),
+				'name'              => $this->get_field_name( 'css_use' ),
+				'type'              => 'checkbox',
+				'default'           => true,
+				'sanitize_callback' => 'absint',
+				'classes'           => array( 'switch-button' ),
+				'since'             => '1.0.0',
+			),
+			array(
+				'th'                => __( 'Content Width', 'mutatio' ),
+				'name'              => $this->get_field_name( 'css_width' ),
+				'type'              => 'number',
+				'default'           => $content_width,
+				'sanitize_callback' => 'absint',
+				'since'             => '1.0.0',
+				'related_to'        => 'css_use',
+				'label'             => esc_html__( 'px', 'mutatio' ),
+			),
+
 		);
 		$this->register_setting( $this->configuration, $this->module_group_key );
 		/**
@@ -74,10 +99,51 @@ class iWorks_Mutatio_Module_Cookie extends iWorks_Mutatio_Module {
 		 */
 		if ( is_admin() ) {
 		} else {
+			add_action( 'wp_head', array( $this, 'action_wp_head_maybe_add_css' ) );
 			add_action( 'wp_footer', array( $this, 'add_cookie_notice' ), PHP_INT_MAX );
 			add_action( 'wp_ajax_mutatio_cookie_notice', array( $this, 'save_user_meta' ) );
 			add_action( 'wp_ajax_nopriv_mutatio_dismiss_visitor_notice', array( $this, 'dismiss_visitor_notice' ) );
 		}
+	}
+
+	public function action_wp_head_maybe_add_css() {
+		if ( empty( $this->get_option_value( 'css_use' ) ) ) {
+			return;
+		}
+		printf(
+			'<style type="text/css" id="plugin-mutatio-%s">%s',
+			esc_attr( $this->module_slug ),
+			$this->eol
+		);
+		/**
+		 * #mutatio-cookie-notice
+		 */
+		/**
+		 * width
+		 */
+		$value = intval( $this->get_option_value( 'css_width' ) );
+		if ( 0 < $value ) {
+			$rules  = '';
+			$rules .= $this->get_css_rule( 'width', 100, '%' );
+			$rules .= $this->get_css_rule( 'max-width', $value, 'px' );
+			$rules .= $this->get_css_rule( 'margin', '0 auto' );
+			echo $this->get_css_selector( '#mutatio-cookie-notice', $rules );
+		}
+		/**
+		 * display
+		 */
+		$rules  = '';
+		$rules .= $this->get_css_rule( 'display', 'flex' );
+		$rules .= $this->get_css_rule( 'gap', 1, 'em' );
+		$rules  = $this->get_css_selector( '.mutatio-cookie-notice-container', $rules );
+		echo $this->get_css_media( 'min', 600, $rules );
+
+		$rules  = '';
+		$rules .= $this->get_css_rule( 'padding', 10, 'px' );
+		echo $this->get_css_selector( '.mutatio-cookie-notice-container', $rules );
+
+		echo '</style>' . $this->eol;
+
 	}
 
 	private function set_data() {
@@ -121,15 +187,17 @@ class iWorks_Mutatio_Module_Cookie extends iWorks_Mutatio_Module {
 		$this->set_data();
 		$content  = sprintf(
 			'<div id="%s" role="banner" class="mutatio-cookie">',
-			$this->data['name']
+			esc_attr( $this->data['name'] )
 		);
 		$content .= sprintf(
-			'<div class="mutatio-cookie-container"><span id="mutatio-cn-notice-text" class="mutatio-cookie-text">%s</span>',
+			'<div class="%1$s-container"><span id="%1$s-text" class="%1$s-text">%2$s</span>',
+			esc_attr( $this->data['name'] ),
 			$this->data['text']
 		);
 		// Data.
 		$content .= sprintf(
-			'<span><a href="#" class="button mutatio-cn-set-cookie" aria-label="%s">%s</a></span>',
+			'<span><a href="#" class="button %s-set-cookie" aria-label="%s">%s</a></span>',
+			esc_attr( $this->data['name'] ),
 			esc_attr__( 'Close cookie information.', 'mutatio' ),
 			esc_html__( 'Close cookie information', 'mutatio' )
 		);

@@ -185,11 +185,42 @@ abstract class iWorks_Mutatio_Module {
 
 	protected function enqueue_script() {
 		$handle = $this->options->get_option_name( $this->module_slug );
-
-		d( $this->data );
 		wp_enqueue_script( $handle );
 		if ( $this->data ) {
 			wp_localize_script( $handle, $handle, $data );
 		}
+	}
+
+	protected function get_css_rule( $name, $value, $value_sufix = '' ) {
+		return sprintf(
+			'%s: %s%s;%s',
+			$name,
+			$value,
+			$value_sufix,
+			$this->eol
+		);
+	}
+
+	protected function get_css_selector( $selector, $rules ) {
+		return sprintf(
+			'%1$s{%3$s%2$s}%3$s',
+			$selector,
+			$rules,
+			$this->eol
+		);
+	}
+
+	protected function get_css_media( $type, $value, $rules ) {
+		if ( ! preg_match( '/^m(in|ax)$/', $type ) ) {
+			return $rules;
+		}
+		return sprintf(
+			'@media screen and (%1$s-width:%2$s) {%4$s%3$s}%4$s',
+			esc_attr( $type ),
+			is_numeric( $value ) ? ( 'max' === $type ? $value + 1 : $value ) . 'px' : $value,
+			$rules,
+			$this->eol
+		);
+
 	}
 }
