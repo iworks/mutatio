@@ -16,16 +16,19 @@ class iWorks_Mutatio_Module_Authorbox extends iWorks_Mutatio_Module {
 		/**
 		 * Settings
 		 */
+		$post_types         = get_post_types( array( 'public' => true ), 'objects' );
+		$post_types_options = array();
+		foreach ( $post_types as $key => $post_type ) {
+			$post_types_options[ $key ] = $post_type->labels->singular_name;
+		}
 		$this->configuration = array(
 			array(
 				'name'    => $this->get_field_name( 'post_type' ),
 				'type'    => 'checkbox_group',
 				'th'      => __( 'Post Types', 'mutatio' ),
-				'options' => array(
-					'post',
-					'page',
-				),
+				'options' => $post_types_options,
 				'since'   => '1.0.0',
+				'default' => array( 'post' ),
 			),
 		);
 		$this->register_setting( $this->configuration, $this->module_group_key );

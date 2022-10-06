@@ -69,6 +69,14 @@ class iWorks_Mutatio_Module_Cookie extends iWorks_Mutatio_Module {
 				'description' => esc_html__( 'Customize the Privacy Policy line that you want to show to your visitors. Will be added at the end of the cookie text.', 'mutatio' ),
 			),
 			array(
+				'name'    => $this->get_field_name( 'close_btn_text' ),
+				'type'    => 'text',
+				'th'      => __( 'Close Button Text', 'mutatio' ),
+				'default' => esc_html__( 'Close cookie information', 'mutatio' ),
+				'since'   => '1.0.0',
+				'classes' => array( 'large-text' ),
+			),
+			array(
 				'type'  => 'subheading',
 				'label' => esc_html__( 'Design', 'mutatio' ),
 			),
@@ -91,7 +99,6 @@ class iWorks_Mutatio_Module_Cookie extends iWorks_Mutatio_Module {
 				'related_to'        => 'css_use',
 				'label'             => esc_html__( 'px', 'mutatio' ),
 			),
-
 		);
 		$this->register_setting( $this->configuration, $this->module_group_key );
 		/**
@@ -199,7 +206,7 @@ class iWorks_Mutatio_Module_Cookie extends iWorks_Mutatio_Module {
 			'<span><a href="#" class="button %s-set-cookie" aria-label="%s">%s</a></span>',
 			esc_attr( $this->data['name'] ),
 			esc_attr__( 'Close cookie information.', 'mutatio' ),
-			esc_html__( 'Close cookie information', 'mutatio' )
+			esc_html__( $this->get_option_value( 'close_btn_text' ) )
 		);
 		$content .= '</div>';
 		$content .= '</div>';
