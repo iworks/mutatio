@@ -99,6 +99,16 @@ class iWorks_Mutatio_Module_Cookie extends iWorks_Mutatio_Module {
 				'related_to'        => 'css_use',
 				'label'             => esc_html__( 'px', 'mutatio' ),
 			),
+			array(
+				'th'                => __( 'Button Corner Radius', 'mutatio' ),
+				'name'              => $this->get_field_name( 'css_btn_radius' ),
+				'type'              => 'number',
+				'default'           => 1,
+				'sanitize_callback' => 'absint',
+				'since'             => '1.0.0',
+				'class'             => 'small-text',
+				'description'       => esc_html__( 'Choose the corner radius of cookie close button in pixels.', 'mutatio' ),
+			),
 		);
 		$this->register_setting( $this->configuration, $this->module_group_key );
 		/**
@@ -148,6 +158,15 @@ class iWorks_Mutatio_Module_Cookie extends iWorks_Mutatio_Module {
 		$rules  = '';
 		$rules .= $this->get_css_rule( 'padding', 10, 'px' );
 		echo $this->get_css_selector( '.mutatio-cookie-notice-container', $rules );
+		/**
+		 * button
+		 */
+		$rules = '';
+		$value = intval( $this->get_option_value( 'css_btn_radius' ) );
+		if ( $value ) {
+			$rules = $this->get_css_rule( 'border-radius', $value, 'px' );
+		}
+		echo $this->get_css_selector( '.mutatio-cookie-notice-set-cookie', $rules );
 
 		echo '</style>' . $this->eol;
 
