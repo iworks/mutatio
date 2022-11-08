@@ -187,7 +187,7 @@ abstract class iWorks_Mutatio_Module {
 		$handle = $this->options->get_option_name( $this->module_slug );
 		wp_enqueue_script( $handle );
 		if ( $this->data ) {
-			wp_localize_script( $handle, $handle, $data );
+			wp_localize_script( $handle, $handle, $this->data );
 		}
 	}
 

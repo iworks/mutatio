@@ -20,7 +20,21 @@ class iWorks_Mutatio_Module_Cookie extends iWorks_Mutatio_Module {
 	 *
 	 * @var string
 	 */
+
 	protected $module_group_key = 'frontend';
+	/**
+	 * Cookie name string.
+	 *
+	 * @var string
+	 */
+	private $cookie_name = __CLASS__;
+
+	/**
+	 * User meta name.
+	 *
+	 * @var string
+	 */
+	private $user_meta_name = __CLASS__;
 
 	public function __construct( $options ) {
 		if ( $this->is_rest_request() ) {
