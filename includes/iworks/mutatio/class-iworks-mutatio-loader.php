@@ -26,7 +26,7 @@ class iWorks_Mutatio_Loader extends iWorks_Mutatio {
 					$class = sprintf( 'iWorks_Mutatio_Module_%s', ucfirst( $module['name'] ) );
 					new $class( $this->options );
 				} else {
-					// d($file);
+					$this->log_message( $file, _x( 'ERROR: missing module:', 'debug', 'mutatio' ) );
 				}
 			}
 		}

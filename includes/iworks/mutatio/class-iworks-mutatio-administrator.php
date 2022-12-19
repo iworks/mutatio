@@ -57,7 +57,8 @@ class iWorks_Mutatio_Administrator extends iWorks_Mutatio {
 
 	public function admin_subpage_callback() {
 		$screen           = get_current_screen();
-		$module_group_key = end( preg_split( '/_/', $screen->base ) );
+		$base             = preg_split( '/_/', $screen->base );
+		$module_group_key = end( $base );
 		$page_data        = $this->options->get_group();
 		$page_data        = $page_data['pages'][ $module_group_key ];
 		/**

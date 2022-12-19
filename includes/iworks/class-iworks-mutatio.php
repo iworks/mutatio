@@ -65,5 +65,19 @@ abstract class iWorks_Mutatio {
 		);
 	}
 
+	protected function log_message( $mesage, $header = false ) {
+		if ( ! $this->debug ) {
+			return;
+		}
+		if ( ! empty( $header ) ) {
+			$mesage = sprintf(
+				'%s%s%s',
+				$header,
+				PHP_EOL,
+				$mesage
+			);
+		}
+		error_log( $mesage );
+	}
 }
 

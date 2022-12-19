@@ -221,6 +221,57 @@ abstract class iWorks_Mutatio_Module {
 			$rules,
 			$this->eol
 		);
+	}
+
+	protected function get_body_classes( $classes = array() ) {
+		if ( ! is_array( $classes ) ) {
+			$classes = array( $classes );
+		}
+		$classes[] = 'iworks-mutatio';
+		$classes[] = sprintf( 'iworks-mutatio-%s', $this->module_group_key );
+		$classes[] = sprintf( 'iworks-mutatio-%s', $this->module_slug );
+		return apply_filters( 'iworks_mutatio_body_classes', $classes, $this->module_slug, $this->module_group_key );
+	}
+
+	/**
+	 * helper to get template name.
+	 *
+	 * @since 1.0.0
+	 */
+	protected function get_template_name( $template, $area = 'frotend' ) {
+		return sprintf(
+			'assets/templates/%s/%s/%s/%s',
+			$this->module_group_key,
+			$this->module_slug,
+			$area,
+			$template
+		);
+	}
+
+
+	/**
+	 * Renders a view file
+	 *
+	 * @param $file
+	 * @param array $args Args to file.
+	 * @param string $area Area of scope.
+	 */
+	protected function render( $file, $args = array(), $area = 'frontend' ) {
+		$template = sprintf( '%s/%s/%s', $this->module_group_key, $this->module_slug, $area );
+		$content  = get_template_part( $template, $file, $args );
+		if ( empty( $content ) ) {
+			$file = sprintf(
+				'%s/assets/templates/%s-%s.php',
+				$this->root,
+				$template,
+				$file
+			);
+			if ( is_file( $file ) ) {
+				echo load_template( $file, true, $args );
+				return;
+			}
+		}
+		echo __( 'Something went wrong!', 'mutatio' );
 
 	}
 }

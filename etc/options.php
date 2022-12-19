@@ -20,6 +20,7 @@ function iworks_mutatio_options() {
 		'menu_position'   => 80.1664476699,
 
 		'pages'           => array(
+			/*
 			'admin'    => array(
 				'menu'               => 'submenu',
 				'parent'             => 'iworks_mutatio_index',
@@ -28,6 +29,7 @@ function iworks_mutatio_options() {
 				'menu_capability'    => apply_filters( 'mutatio/capability/admin', 'manage_options' ),
 				'show_page_callback' => 'iworks_mutatio_page_callback',
 			),
+			 */
 			'frontend' => array(
 				'menu'               => 'submenu',
 				'parent'             => 'iworks_mutatio_index',
@@ -36,6 +38,7 @@ function iworks_mutatio_options() {
 				'menu_capability'    => apply_filters( 'mutatio/capability/module/frontend', 'manage_options' ),
 				'show_page_callback' => 'iworks_mutatio_page_callback',
 			),
+			/*
 			'email'    => array(
 				'menu'               => 'submenu',
 				'parent'             => 'iworks_mutatio_index',
@@ -44,6 +47,7 @@ function iworks_mutatio_options() {
 				'menu_capability'    => apply_filters( 'mutatio/capability/module/email', 'manage_options' ),
 				'show_page_callback' => 'iworks_mutatio_page_callback',
 			),
+			 */
 			'utilites' => array(
 				'menu'               => 'submenu',
 				'parent'             => 'iworks_mutatio_index',
@@ -61,7 +65,7 @@ function iworks_mutatio_options() {
 			 * Section "Admin Area"
 			 *
 			 * @since 1.0.0
-			 */
+			 * /
 			array(
 				'type'        => 'heading',
 				'label'       => __( 'Admin Area', 'mutatio' ),
@@ -115,10 +119,10 @@ function iworks_mutatio_options() {
 			 *
 			 * @since 1.0.0
 			 */
-			array(
-				'type'  => 'heading',
-				'label' => __( 'Email', 'mutatio' ),
-			),
+			// array(
+				// 'type'  => 'heading',
+				// 'label' => __( 'Email', 'mutatio' ),
+			// ),
 			/**
 			 * Section "Utilites"
 			 *

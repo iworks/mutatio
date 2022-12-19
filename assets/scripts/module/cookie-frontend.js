@@ -1,10 +1,10 @@
 /**
- * Mutatio — change your site look - v1.0.0
+ * Mutatio — change your site look - v0.0.1
  * http://mutatio.iworks.pl/
  * Copyright (c) 2022; * Licensed GPLv2+ */
 document.addEventListener("DOMContentLoaded", function(event) {
     var value;
-    var cookie_container = document.getElementById(window.mutatio_cookie.name);
+    var cookie_container = document.getElementById(window.iworks_mutatio_cookie.name);
     var mutatio_cookie_xml_http = new XMLHttpRequest();
     /**
      * get cookie value
@@ -40,11 +40,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
         /**
          * add time
          */
-        value += parseInt(window.mutatio_cookie.cookie.value) * 1000;
+        value += parseInt(window.iworks_mutatio_cookie.cookie.value) * 1000;
         /**
          * add time zone
          */
-        value += parseInt(window.mutatio_cookie.cookie.timezone) * 1000;
+        value += parseInt(window.iworks_mutatio_cookie.cookie.timezone) * 1000;
         /**
          * set time
          */
@@ -52,45 +52,44 @@ document.addEventListener("DOMContentLoaded", function(event) {
         /**
          * add cookie timestamp
          */
-        cookie = window.mutatio_cookie.cookie.name + '=' + value / 1000 + ';';
+        cookie = window.iworks_mutatio_cookie.cookie.name + '=' + value / 1000 + ';';
         cookie += ' expires=' + expires.toUTCString() + ';';
-        if (window.mutatio_cookie.cookie.domain) {
-            cookie += ' domain=' + window.mutatio_cookie.cookie.domain + ';';
+        if (window.iworks_mutatio_cookie.cookie.domain) {
+            cookie += ' domain=' + window.iworks_mutatio_cookie.cookie.domain + ';';
         }
         /**
          * Add cookie now (fix cache issue)
          */
-        cookie += ' path=' + window.mutatio_cookie.cookie.path + ';';
-        if ('on' === window.mutatio_cookie.cookie.secure) {
+        cookie += ' path=' + window.iworks_mutatio_cookie.cookie.path + ';';
+        if ('on' === window.iworks_mutatio_cookie.cookie.secure) {
             cookie += ' secure;';
         }
         document.cookie = cookie;
-        cookie = window.mutatio_cookie.cookie.name + '_close=hide;';
+        cookie = window.iworks_mutatio_cookie.cookie.name + '_close=hide;';
         cookie += ' expires=;';
-        if (window.mutatio_cookie.cookie.domain) {
-            cookie += ' domain=' + window.mutatio_cookie.cookie.domain + ';';
+        if (window.iworks_mutatio_cookie.cookie.domain) {
+            cookie += ' domain=' + window.iworks_mutatio_cookie.cookie.domain + ';';
         }
-        cookie += ' path=' + window.mutatio_cookie.cookie.path + ';';
-        if ('on' === window.mutatio_cookie.cookie.secure) {
+        cookie += ' path=' + window.iworks_mutatio_cookie.cookie.path + ';';
+        if ('on' === window.iworks_mutatio_cookie.cookie.secure) {
             cookie += ' secure;';
         }
         document.cookie = cookie;
         /**
-         * set user meta
+         * set data
          */
-        if (undefined !== window.mutatio_cookie.cookie.logged && 'yes' === window.mutatio_cookie.cookie.logged) {
-            data = {
-                'action': 'mutatio_cookie_notice',
-                'user_id': window.mutatio_cookie.cookie.user_id,
-                'nonce': window.mutatio_cookie.cookie.nonce
-            };
-        } else {
-            // Dimiss the notice for visitor.
-            data = {
-                'action': 'mutatio_cookie_notice',
-                'nonce': window.mutatio_cookie.cookie.nonce
-            };
-        }
+        data = {
+            'action': 'mutatio_cookie_notice',
+            'nonce': window.iworks_mutatio_cookie.nonce
+        };
+        /**
+         * set data
+         */
+        data = {
+            'action': 'mutatio_cookie_notice',
+            'user_id': window.iworks_mutatio_cookie.cookie.user_id,
+            'nonce': window.iworks_mutatio_cookie.nonce
+        };
         /**
          * send data
          */
@@ -102,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             query += '=';
             query += encodeURIComponent(data[key]);
         }
-        mutatio_cookie_xml_http.open('GET', window.mutatio_cookie.cookie.ajaxurl + '?' + query, true);
+        mutatio_cookie_xml_http.open('GET', window.iworks_mutatio_cookie.ajaxurl + '?' + query, true);
         mutatio_cookie_xml_http.send(null);
         /**
          * hide
@@ -120,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     /**
      * it ws already shown
      */
-    value = mutatioCookieGetCookieValue(window.mutatio_cookie.cookie.name + '_close');
+    value = mutatioCookieGetCookieValue(window.iworks_mutatio_cookie.cookie.name + '_close');
     if ('hide' === value) {
         cookie_container.style.display = 'none';
     }
